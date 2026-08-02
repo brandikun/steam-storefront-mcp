@@ -1,0 +1,49 @@
+{
+  "name": "steam-storefront-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Steam Storefront public metadata — game tags, genres, categories, descriptions, and user review sentiment.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "steam",
+    "steam-storefront",
+    "game-tags",
+    "gaming"
+  ],
+  "author": "brandikun",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brandikun/steam-storefront-mcp"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "steam-storefront-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "cheerio": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.5.0",
+    "typescript-eslint": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
