@@ -5,7 +5,6 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import * as cheerio from "cheerio";
 
 // ---------------------------------------------------------------------------
 // Types & Interfaces
@@ -144,44 +143,13 @@ function normalizeReviews(appId: number, raw: SteamReviewsResponse) {
   };
 }
 
-function extractTagsFromHtml(html: string): string[] {
-  const $ = cheerio.load(html);
-  const tags: string[] = [];
-
-  // Extract from a.app_tag elements
-  $("a.app_tag").each((_, el) => {
-    const text = $(el).text().trim();
-    if (text && text !== "+") {
-      tags.push(text);
-    }
-  });
-
-  if (tags.length > 0) {
-    return Array.from(new Set(tags));
-  }
-
-  // Fallback: search JavaScript InitAppTagData inside inline scripts
-  const scriptRegex = /InitAppTagData\(\s*(\[.*?\])\s*,\s*(\[.*?\])\s*\);/s;
-  const match = scriptRegex.exec(html);
-  if (match && match[2]) {
-    try {
-      const parsedTags = JSON.parse(match[2]) as Array<{ name: string }>;
-      return parsedTags.map((t) => t.name).filter(Boolean);
-    } catch {
-      // Ignore parse errors for fallback script regex
-    }
-  }
-
-  return [];
-}
-
 // ---------------------------------------------------------------------------
 // MCP Server Definition
 // ---------------------------------------------------------------------------
 const server = new Server(
   {
     name: "steam-storefront-mcp",
-    version: "1.0.0",
+    version: "1.0.2",
   },
   {
     capabilities: {
@@ -227,21 +195,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         name: "get_app_reviews",
         description:
           "Get Steam player review summaries (review score rating e.g. 'Overwhelmingly Positive', total reviews, positive ratio).",
-        inputSchema: {
-          type: "object",
-          properties: {
-            appId: {
-              type: "number",
-              description: "The numeric Steam AppID.",
-            },
-          },
-          required: ["appId"],
-        },
-      },
-      {
-        name: "get_app_tags",
-        description:
-          "Get community user-defined Steam tags for a game (e.g. 'Roguelike', 'Deckbuilder', 'Souls-like', 'Co-op').",
         inputSchema: {
           type: "object",
           properties: {
@@ -318,26 +271,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           {
             type: "text",
             text: JSON.stringify(normalized, null, 2),
-          },
-        ],
-      };
-    }
-
-    if (name === "get_app_tags") {
-      const appId = Number(args?.appId);
-      if (!appId || isNaN(appId)) throw new Error("Valid numeric appId is required.");
-
-      const url = `https://store.steampowered.com/app/${appId}/`;
-      const html = await fetchWithCache<string>(url, {
-        Cookie: "birthtime=0; lastagecheckage=1-0-1990",
-      });
-      const tags = extractTagsFromHtml(html);
-
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify({ appId, tagsCount: tags.length, tags }, null, 2),
           },
         ],
       };

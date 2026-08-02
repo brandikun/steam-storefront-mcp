@@ -1,8 +1,8 @@
 # steam-storefront-mcp
 
-An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants access to public Steam Storefront metadata, user tags, genres, categories, and player review sentiment.
+An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants access to public Steam Storefront metadata, official genres, categories, and player review sentiment via structured Steam JSON APIs.
 
-Search for games on Steam, retrieve official store details, extract community user tags, and analyze Steam player review ratings — all without needing a Steam API key.
+Search for games on Steam, retrieve official store details, and analyze Steam player review ratings — all without needing a Steam API key.
 
 ---
 
@@ -10,10 +10,9 @@ Search for games on Steam, retrieve official store details, extract community us
 
 | Tool | Parameters | Description |
 |------|------------|-------------|
-| `search_store` | `term` (string) | Search Steam Storefront by game title query — returns matching games with AppIDs. |
+| `search_store` | `term` (string) | Search Steam Storefront by game title query — returns matching games with AppIDs via structured JSON API. |
 | `get_store_details` | `appId` (number) | Get official store metadata (genres, categories, short/detailed description, developers, publishers, metacritic score, platforms, release date). |
 | `get_app_reviews` | `appId` (number) | Get Steam player review statistics (positive review percentage, total review count, rating score string e.g. `"Overwhelmingly Positive"`). |
-| `get_app_tags` | `appId` (number) | Get community user-defined tags (*Roguelike*, *Deckbuilder*, *Souls-like*, *Co-op*, etc.). |
 
 ---
 
@@ -79,10 +78,9 @@ Then add to your MCP config:
 
 Once connected, you can ask your AI assistant questions like:
 
-- *"What are the top user tags for Elden Ring on Steam?"*
 - *"What is the Steam review consensus for Vampire Crawlers?"*
-- *"Search Steam for roguelike deckbuilder games"*
-- *"Find out if Hades II supports full controller support and Steam Deck"*
+- *"Search Steam for Elden Ring to get its AppID"*
+- *"Find out if Hades II supports full controller support, co-op, and Steam Deck"*
 
 ---
 

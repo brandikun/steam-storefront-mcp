@@ -1,6 +1,6 @@
 {
   "name": "steam-storefront-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MCP server for Steam Storefront public metadata — game tags, genres, categories, descriptions, and user review sentiment.",
   "keywords": [
     "mcp",
@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "cheerio": "^1.0.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
