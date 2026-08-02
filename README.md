@@ -1,35 +1,34 @@
 # steam-storefront-mcp
 
-Model Context Protocol (MCP) server for querying public Steam Storefront metadata, user tags, genres, categories, and player review sentiment.
+An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants access to public Steam Storefront metadata, user tags, genres, categories, and player review sentiment.
 
-## Features
+Search for games on Steam, retrieve official store details, extract community user tags, and analyze Steam player review ratings — all without needing a Steam API key.
 
-- **`search_store`**: Search games on Steam by title query to discover Steam AppIDs.
-- **`get_store_details`**: Fetch official store metadata (genres, categories, description, developers, metacritic, release date).
-- **`get_app_reviews`**: Fetch Steam player review statistics (positive review percentage, total review count, rating score string like "Overwhelmingly Positive").
-- **`get_app_tags`**: Extract community user-defined tags (*Roguelike*, *Deckbuilder*, *Souls-like*, *Co-op*, etc.).
-- **Built-in In-Memory Cache**: 1-hour TTL caching layer to protect against rate limits and maximize efficiency.
+---
 
-## Quick Start
+## Tools
 
-### Installation
+| Tool | Parameters | Description |
+|------|------------|-------------|
+| `search_store` | `term` (string) | Search Steam Storefront by game title query — returns matching games with AppIDs. |
+| `get_store_details` | `appId` (number) | Get official store metadata (genres, categories, short/detailed description, developers, publishers, metacritic score, platforms, release date). |
+| `get_app_reviews` | `appId` (number) | Get Steam player review statistics (positive review percentage, total review count, rating score string e.g. `"Overwhelmingly Positive"`). |
+| `get_app_tags` | `appId` (number) | Get community user-defined tags (*Roguelike*, *Deckbuilder*, *Souls-like*, *Co-op*, etc.). |
 
-```bash
-npm install
-npm run build
-```
+---
 
-### Running
+## Prerequisites
 
-```bash
-npm start
-```
+- [Node.js](https://nodejs.org) v18 or later
+- **No API keys or Steam account required** — this server uses public Steam Storefront endpoints.
 
-## MCP Configuration
+---
 
-Add the following entry to your MCP configuration file (`mcp_config.json`):
+## Installation & Configuration
 
-### Option 1: Using NPX (Recommended)
+### Option A — npx (Recommended, no install required)
+
+Add the following to your MCP client config file:
 
 ```json
 {
@@ -42,18 +41,59 @@ Add the following entry to your MCP configuration file (`mcp_config.json`):
 }
 ```
 
-### Option 2: Using Local Build
+### Option B — Clone and build locally
+
+```bash
+git clone https://github.com/brandikun/steam-storefront-mcp.git
+cd steam-storefront-mcp
+npm install
+npm run build
+```
+
+Then add to your MCP config:
 
 ```json
 {
   "mcpServers": {
     "steam-storefront": {
       "command": "node",
-      "args": ["/path/to/steam-storefront-mcp/dist/index.js"]
+      "args": ["/absolute/path/to/steam-storefront-mcp/dist/index.js"]
     }
   }
 }
 ```
+
+---
+
+## MCP Client Config Locations
+
+| Client | Config File Location |
+|--------|----------------------|
+| **Antigravity / AGY** | `~/.gemini/antigravity-cli/settings.json` or `mcp_config.json` |
+| **Claude Desktop (macOS)** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| **Claude Desktop (Windows)** | `%APPDATA%\Claude\claude_desktop_config.json` |
+
+---
+
+## Example Usage
+
+Once connected, you can ask your AI assistant questions like:
+
+- *"What are the top user tags for Elden Ring on Steam?"*
+- *"What is the Steam review consensus for Vampire Crawlers?"*
+- *"Search Steam for roguelike deckbuilder games"*
+- *"Find out if Hades II supports full controller support and Steam Deck"*
+
+---
+
+## Performance & Caching
+
+| Feature | Details |
+|---------|---------|
+| **In-Memory Cache** | All Steam Storefront API and store page requests are cached in memory for **1 hour (3600s)**. |
+| **Rate Limit Protection** | Repeated lookups for the same game use 0 network requests. |
+
+---
 
 ## License
 
