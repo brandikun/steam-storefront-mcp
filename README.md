@@ -1,8 +1,8 @@
 # steam-storefront-mcp
 
-An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants access to public Steam Storefront metadata, official genres, categories, and player review sentiment via structured Steam JSON APIs.
+An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI assistants access to public Steam Storefront metadata, official genres, categories, and player review sentiment via structured [Steam Storefront JSON APIs](https://partner.steamgames.com/doc/webapi).
 
-Search for games on Steam, retrieve official store details, and analyze Steam player review ratings — all without needing a Steam API key.
+Search for games on Steam, retrieve official store details, and analyze Steam player review ratings — all without needing a Steam API key. For underlying API documentation and technical guidelines, see the official [Steam Web API Documentation](https://partner.steamgames.com/doc/webapi).
 
 ---
 
