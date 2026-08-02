@@ -1,6 +1,6 @@
 {
   "name": "steam-storefront-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for Steam Storefront public metadata — game tags, genres, categories, descriptions, and user review sentiment.",
   "keywords": [
     "mcp",
